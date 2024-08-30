@@ -14,22 +14,22 @@ source /usr/share/yunohost/helpers
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
-ynh_script_progression --message="Updating NGINX web server configuration..." --weight=1
+ynh_script_progression "Updating NGINX web server configuration..."
 
-ynh_change_url_nginx_config
+ynh_config_change_url_nginx
 
 #=================================================
 # SPECIFIC MODIFICATIONS
 #=================================================
-ynh_script_progression --message="Updating a configuration file..." --weight=1
+ynh_script_progression "Updating configuration..."
 
-ynh_add_config --template="htconfig.sample.php" --destination="$install_dir/.htconfig.php"
+ynh_config_add --template="htconfig.sample.php" --destination="$install_dir/.htconfig.php"
 
-chmod 600 "$install_dir/.htconfig.php"
-chown "$app:$app" "$install_dir/.htconfig.php"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 600 "$install_dir/.htconfig.php"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown "$app:$app" "$install_dir/.htconfig.php"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Change of URL completed for $app" --last
+ynh_script_progression "Change of URL completed for $app"

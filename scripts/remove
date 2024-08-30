@@ -1,36 +1,30 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
-#REMOVEME? ynh_script_progression --message="Loading installation settings..."
+#REMOVEME? ynh_script_progression "Loading installation settings..."
 
 #REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
-#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
-#REMOVEME? db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+#REMOVEME? domain=$(ynh_app_setting_get --key=domain)
+#REMOVEME? db_name=$(ynh_app_setting_get --key=db_name)
 #REMOVEME? db_user=$db_name
-#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
-#REMOVEME? database=$(ynh_app_setting_get --app=$app --key=database)
+#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --key=install_dir)
+#REMOVEME? database=$(ynh_app_setting_get --key=database)
 
 #=================================================
 # STANDARD REMOVE
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing logrotate configuration..."
+ynh_script_progression "Removing logrotate configuration..."
 
 # Remove the app-specific logrotate config
-ynh_remove_logrotate
+ynh_config_remove_logrotate
 
 #=================================================
 # REMOVE THE DATABASE
@@ -39,59 +33,57 @@ ynh_remove_logrotate
 #=================================================
 # REMOVE APP MAIN DIR
 #=================================================
-#REMOVEME? ynh_script_progression --message="Removing app main directory..."
+#REMOVEME? ynh_script_progression "Removing app main directory..."
 
 # Remove the app directory securely
-#REMOVEME? ynh_secure_remove --file="$install_dir"
+#REMOVEME? ynh_safe_rm "$install_dir"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing NGINX web server configuration..."
+ynh_script_progression "Removing NGINX web server configuration..."
 
 # Remove the dedicated NGINX config
-ynh_remove_nginx_config
+ynh_config_remove_nginx
 
 #=================================================
 # REMOVE PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing PHP-FPM configuration..."
+ynh_script_progression "Removing PHP-FPM configuration..."
 
 # Remove the dedicated PHP-FPM config
-ynh_remove_fpm_config
+ynh_config_remove_phpfpm
 
 #=================================================
 # REMOVE DEPENDENCIES
 #=================================================
-#REMOVEME? ynh_script_progression --message="Removing dependencies..."
+#REMOVEME? ynh_script_progression "Removing dependencies..."
 
 # Remove metapackage and its dependencies
-#REMOVEME? ynh_remove_app_dependencies
+#REMOVEME? ynh_apt_remove_dependencies
 
 #=================================================
 # REMOVE FAIL2BAN CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing Fail2Ban configuration..."
+ynh_script_progression "Removing Fail2Ban configuration..."
 
 # Remove the dedicated Fail2Ban config
-ynh_remove_fail2ban_config
+ynh_config_remove_fail2ban
 
 #=================================================
 # SPECIFIC REMOVE
 #=================================================
 # REMOVE VARIOUS FILES
 #=================================================
-ynh_script_progression --message="Removing various files..."
+ynh_script_progression "Removing various files..."
 
 # Remove a cron file
-ynh_secure_remove --file="/etc/cron.d/$app"
+ynh_safe_rm "/etc/cron.d/$app"
 
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-#REMOVEME? ynh_script_progression --message="Removing the dedicated system user..."
+#REMOVEME? ynh_script_progression "Removing the dedicated system user..."
 
 # Delete a system user
 #REMOVEME? ynh_system_user_delete --username=$app
@@ -100,4 +92,4 @@ ynh_secure_remove --file="/etc/cron.d/$app"
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed"
+ynh_script_progression "Removal of $app completed"
